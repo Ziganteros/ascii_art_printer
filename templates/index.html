@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Converter</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Converti immagine in ASCII Art</h1>
+        
+        <!-- Form per caricare una nuova immagine -->
+        <form method="POST" enctype="multipart/form-data">
+            <label for="image">Carica un'immagine:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <div>
+                Scegli il generatore di immagini ascii: 
+                <button type="submit" name="ScalaDiGrigi">Scala di grigi</button>
+                <button type="submit" name="Scikit">Scikit-image</button>
+            </div>
+        </form>
+
+        <!-- Form per aggiornare i caratteri -->
+        {% if generator == "ScalaDiGrigi" %}
+        <form method="POST">
+            <label for="ascii_chars">Caratteri per tonalità di grigio (da scuro a chiaro):</label>
+            <input type="text" id="ascii_chars" name="ascii_chars" value="{{ ascii_chars }}">
+            <button type="submit">Aggiorna caratteri</button>
+        </form>
+        {% endif %}
+
+        <!-- Form per aggiornare i caratteri -->
+        {% if generator == "Scikit" %}
+        <form method="POST">
+            <div>
+                <label for="edge_char">Carattere per disegnarre i contorni dell'immagine:</label>
+                <input type="text" id="edge_char" name="edge_char" value="{{ edge_char }}">
+            </div>
+            <div>
+                <label for="block_size">Precisione dettagli (1=alta, 9=bassa ):</label>
+                <input type="number" id="block_size" name="block_size" value="{{ block_size }}">
+            </div>
+            <button type="submit">Aggiorna parametri</button>
+        </form>
+        {% endif %}
+
+        {% if ascii_art %}
+        <h2>Risultato ASCII Art:</h2>
+        <pre class="ascii-art">{{ ascii_art }}</pre>
+        <a href="{{ url_for('download_file') }}" class="download-btn">Scarica come .txt</a>
+        {% endif %}
+    </div>
+</body>
+</html>
